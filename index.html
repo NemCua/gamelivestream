@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Battle Arena</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Auto toggle: khuất góc trên -->
+  <div id="auto-controls">
+    <label class="auto-label">
+      <input type="checkbox" id="auto-skill-toggle" onchange="Game.setAutoSkill(this.checked)">
+    </label>
+  </div>
+
+  <div id="app">
+
+    <!-- Header -->
+    <div id="header">
+      <div class="title-pixel">⚔ PIXEL BATTLE ARENA ⚔</div>
+      <div class="subtitle">Thả gift để chiến đấu – Chỉ số tăng theo gift!</div>
+    </div>
+
+    <!-- Stat panels + Arena -->
+    <div id="main-row">
+
+      <!-- Stat Panel A -->
+      <div class="stat-panel" id="stat-panel-a">
+        <div class="stat-team-name red-text">🔴 ĐỘI ĐỎ</div>
+        <div class="stat-avatar red-border" id="avatar-a"><img src="char/char1_idle1.png" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated"></div>
+
+        <div class="stat-block">
+          <div class="stat-row">
+            <span class="stat-icon">❤️</span>
+            <span class="stat-label">HP</span>
+            <span class="stat-val" id="s-hp-a">500</span>
+          </div>
+          <div class="stat-bar-mini">
+            <div class="stat-bar-fill hp-fill" id="s-hpbar-a" style="width:100%"></div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">⚔️</span>
+            <span class="stat-label">ATK</span>
+            <span class="stat-val" id="s-atk-a">10</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🛡️</span>
+            <span class="stat-label">DEF</span>
+            <span class="stat-val" id="s-def-a">5</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🎯</span>
+            <span class="stat-label">CRIT%</span>
+            <span class="stat-val crit-color" id="s-crit-a">5%</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">💥</span>
+            <span class="stat-label">CRIT DMG</span>
+            <span class="stat-val crit-color" id="s-critdmg-a">150%</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🎁</span>
+            <span class="stat-label">GIFTS</span>
+            <span class="stat-val gold-color" id="s-gift-a">0</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">📊</span>
+            <span class="stat-label">TOTAL DMG</span>
+            <span class="stat-val" id="s-totdmg-a">0</span>
+          </div>
+        </div>
+
+        <!-- Buff list -->
+        <div class="buff-area" id="buff-a"></div>
+
+        <!-- Equipment slots -->
+        <div class="equip-title">⚙ TRANG BỊ</div>
+        <div class="equip-panel" id="equip-panel-a"></div>
+      </div>
+
+      <!-- Arena -->
+      <div id="arena-wrap">
+        <canvas id="arena" width="640" height="220"></canvas>
+        <canvas id="cutscene-canvas" width="640" height="220"></canvas>
+        <div id="damage-layer"></div>
+        <div id="gift-notify"></div>
+        <img id="skill-gif" src="skillEffect (1).gif" style="display:none" />
+      </div>
+
+      <!-- Stat Panel B -->
+      <div class="stat-panel" id="stat-panel-b">
+        <div class="stat-team-name blue-text">🔵 ĐỘI XANH</div>
+        <div class="stat-avatar blue-border" id="avatar-b"><img src="char/char2_idle1.png" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated"></div>
+
+        <div class="stat-block">
+          <div class="stat-row">
+            <span class="stat-icon">❤️</span>
+            <span class="stat-label">HP</span>
+            <span class="stat-val" id="s-hp-b">500</span>
+          </div>
+          <div class="stat-bar-mini">
+            <div class="stat-bar-fill hp-fill" id="s-hpbar-b" style="width:100%"></div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">⚔️</span>
+            <span class="stat-label">ATK</span>
+            <span class="stat-val" id="s-atk-b">10</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🛡️</span>
+            <span class="stat-label">DEF</span>
+            <span class="stat-val" id="s-def-b">5</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🎯</span>
+            <span class="stat-label">CRIT%</span>
+            <span class="stat-val crit-color" id="s-crit-b">5%</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">💥</span>
+            <span class="stat-label">CRIT DMG</span>
+            <span class="stat-val crit-color" id="s-critdmg-b">150%</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">🎁</span>
+            <span class="stat-label">GIFTS</span>
+            <span class="stat-val gold-color" id="s-gift-b">0</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">📊</span>
+            <span class="stat-label">TOTAL DMG</span>
+            <span class="stat-val" id="s-totdmg-b">0</span>
+          </div>
+        </div>
+
+        <!-- Buff list -->
+        <div class="buff-area" id="buff-b"></div>
+
+        <!-- Equipment slots -->
+        <div class="equip-title">⚙ TRANG BỊ</div>
+        <div class="equip-panel" id="equip-panel-b"></div>
+      </div>
+
+    </div><!-- end main-row -->
+
+    <!-- Gift Guide -->
+    <div id="gift-guide">
+      <div class="gg-col red-side">
+        <div class="gg-title red-text">🔴 ĐỘI ĐỎ</div>
+        <div class="gg-row">
+          <div class="gg-item">
+            <img src="xutiktok/nuochoa_20.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Thiên Thạch</div>
+            <div class="gg-coin">20 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/co4la_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Sấm Sét</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/rosa_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Tên Rồng</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/bantim_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Mưa Tên</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/bingchiling_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Tam Kiếm</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/traibong_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Hồi Máu</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/chuheo_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Gacha</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/rose_1.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Đánh Thường</div>
+            <div class="gg-coin">1 xu</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gg-divider">VS</div>
+
+      <div class="gg-col blue-side">
+        <div class="gg-title blue-text">🔵 ĐỘI XANH</div>
+        <div class="gg-row">
+          <div class="gg-item">
+            <img src="xutiktok/littleKiss_20.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Thiên Thạch</div>
+            <div class="gg-coin">20 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/vongco_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Sấm Sét</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/tinhthan_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Tên Rồng</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/ngo_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Mưa Tên</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/ngontay_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Tam Kiếm</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/quadao_5.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Hồi Máu</div>
+            <div class="gg-coin">5 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/choangluon_10.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Gacha</div>
+            <div class="gg-coin">10 xu</div>
+          </div>
+          <div class="gg-item">
+            <img src="xutiktok/tiktok_1.webp" class="gg-img">
+            <div class="gg-arrow">▼</div>
+            <div class="gg-effect gg-text">Đánh Thường</div>
+            <div class="gg-coin">1 xu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Controls -->
+    <div id="controls">
+      <div class="ctrl-row">
+        <button onclick="Game.receiveGift('A','Rose',1,'Test')">🌹 Rose → 🔴</button>
+        <button onclick="Game.receiveGift('B','Rose',1,'Test')">🌹 Rose → 🔵</button>
+        <button onclick="Game.receiveGift('A','TikTok',1,'Test')">✨ TikTok → 🔴</button>
+        <button onclick="Game.receiveGift('B','TikTok',1,'Test')">✨ TikTok → 🔵</button>
+        <button onclick="Game.receiveGift('A','Universe',1,'Test')">☄️ Universe → 🔴</button>
+        <button onclick="Game.receiveGift('B','Universe',1,'Test')">☄️ Universe → 🔵</button>
+        <button onclick="Game.receiveGift('A','Lightning',1,'Test')">⚡ Lightning → 🔴</button>
+        <button onclick="Game.receiveGift('B','Lightning',1,'Test')">⚡ Lightning → 🔵</button>
+        <button onclick="Game.receiveGift('A','Dragon',1,'Test')">🐉 Dragon → 🔴</button>
+        <button onclick="Game.receiveGift('B','Dragon',1,'Test')">🐉 Dragon → 🔵</button>
+        <button onclick="Game.receiveGift('A','Cupid',1,'Test')">💘 Cupid → 🔴</button>
+        <button onclick="Game.receiveGift('B','Cupid',1,'Test')">💘 Cupid → 🔵</button>
+        <button onclick="Game.receiveGift('A','Galavant',1,'Test')">🏇 Galavant → 🔴</button>
+        <button onclick="Game.receiveGift('B','Galavant',1,'Test')">🏇 Galavant → 🔵</button>
+        <button onclick="Gacha.roll('A',1,'Test')">🎰 Gacha → 🔴</button>
+        <button onclick="Gacha.roll('B',1,'Test')">🎰 Gacha → 🔵</button>
+        <button onclick="Game.resetGame()" class="btn-reset">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- HP Bars full width -->
+    <div id="hpbars">
+      <div class="fighter-panel left">
+        <div class="fighter-name red-text">🔴 TEAM ĐỎ</div>
+        <div class="hp-bar-wrap">
+          <div class="hp-bar-bg">
+            <div class="hp-bar red" id="hp-bar-a"></div>
+            <div class="hp-text" id="hp-text-a">500 / 500</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vs-badge">VS</div>
+
+      <div class="fighter-panel right">
+        <div class="fighter-name blue-text">🔵 TEAM XANH</div>
+        <div class="hp-bar-wrap">
+          <div class="hp-bar-bg">
+            <div class="hp-bar blue" id="hp-bar-b"></div>
+            <div class="hp-text" id="hp-text-b">500 / 500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Combo / Event banner -->
+    <div id="combo-banner"></div>
+
+
+  </div>
+  <script src="skills.js"></script>
+  <script src="cutscene.js"></script>
+  <script src="gacha.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
